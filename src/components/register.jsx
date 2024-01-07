@@ -85,7 +85,7 @@ const Register = () => {
         }
     }, [msgClass, validateMsg]);
 
-    useEffect(()=>{if(isAuth){navigate('/')}},[])
+    useEffect(()=>{if(isAuth){navigate('/')}},[isAuth])
 
     return (
         <div className="container mt-5">

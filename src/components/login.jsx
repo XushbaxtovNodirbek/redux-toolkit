@@ -33,7 +33,12 @@ const Login = () => {
         }
     };
 
-    useEffect(()=>{if(isAuth){navigate('/')}},[])
+    useEffect(() => {
+        console.log(isAuth);
+        if (isAuth) {
+            navigate("/");
+        }
+    },[isAuth]);
 
     useEffect(() => {
         if (msgClass.length > 1 && validateMsg.length > 1) {
