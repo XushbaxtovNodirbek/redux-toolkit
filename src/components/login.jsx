@@ -4,15 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { signUserFailure, signUserStart, signUserSuccess } from "../slice/auth";
 import { emailValidation, passwordValidation } from "../validations";
 import AuthServices from "../services/auth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     // INITIAL STATES
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
-    const { isLoading } = useSelector((state) => state.auth);
+    const { isLoading, isAuth } = useSelector((state) => state.auth);
     const [validateMsg, setValidateMsg] = useState("");
     const [msgClass, setMsgClass] = useState("invalid");
+    const navigate = useNavigate();
 
     const loginHandler = async (e) => {
         e.preventDefault();
@@ -21,12 +23,17 @@ const Login = () => {
         try {
             const data = await AuthServices.loginUser(user);
             dispatch(signUserSuccess(data.user));
+            setEmail("")
+            setPassword("")
+            navigate("/")
         } catch (e) {
             dispatch(signUserFailure());
             setMsgClass("danger");
             setValidateMsg("Email yoki parol xato");
         }
     };
+
+    useEffect(()=>{if(isAuth){navigate('/')}},[])
 
     useEffect(() => {
         if (msgClass.length > 1 && validateMsg.length > 1) {

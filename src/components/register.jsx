@@ -13,6 +13,7 @@ import {
     passwordValidation,
     usernameValidation,
 } from "../validations";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
     // INITIAL STATES
@@ -21,9 +22,10 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [validateMsg, setValidateMsg] = useState("");
     const [msgClass, setMsgClass] = useState("invalid");
+    const navigate = useNavigate()
     // REDUX STATES
     const dispatch = useDispatch();
-    const { isLoading } = useSelector((state) => state.auth);
+    const { isLoading, isAuth } = useSelector((state) => state.auth);
     // HANDLERS
     const registerHandler = async (e) => {
         e.preventDefault();
@@ -37,7 +39,7 @@ const Register = () => {
             setEmail("");
             setUsername("");
             setPassword("");
-            localStorage.setItem("token", data.user.token);
+            navigate("/")
         } catch (e) {
             if (e.response.data.errors.email) {
                 setValidateMsg("Bu email allaqachon ro'yxatdan o'tgan");
@@ -82,6 +84,8 @@ const Register = () => {
             }, 3000);
         }
     }, [msgClass, validateMsg]);
+
+    useEffect(()=>{if(isAuth){navigate('/')}},[])
 
     return (
         <div className="container mt-5">
